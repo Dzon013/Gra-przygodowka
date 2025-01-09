@@ -1,9 +1,12 @@
 from Postacie import Przeciwnik
+from Postacie import Bohater
 from Pasywne_Lokacje import Ekwipunek
+import Pierwszy_swiat
+
 
 
 class Gra:
-    def __init__(self, koszt_levela):
+    def __init__(self, koszt_levela, wzmocnienie):
         self.bron = None
         self.bohater = None
         self.przeciwnik1 = Przeciwnik("Armia Szkieletów", 300, 20, 100, 500)
@@ -12,6 +15,7 @@ class Gra:
         self.przeciwnik4 = Przeciwnik("Kamienny Olbrzym", 600, 80, 400, 800)
         self.boss = Przeciwnik("Godzilla", 1000, 150, 1000, 1000)
         self.koszt_levela = koszt_levela
+        self.wzmocnienie = wzmocnienie
 
     def start(self, x):
         self.bohater = x
@@ -117,20 +121,18 @@ class Gra:
                     self.poruszaj_sie2()
 
             elif kupno == "5":
-                self.koszt_levela = 50
-                wzmocnienie = 20
+                self.koszt_levela += 50
+                self.wzmocnienie += 20
                 if self.bohater.pieniadze < self.koszt_levela:
                     print("Za mało pieniędzy")
                     self.poruszaj_sie2()
                 else:
                     while self.bohater.pieniadze >= self.koszt_levela:
                         self.bohater.pieniadze = self.bohater.pieniadze - self.koszt_levela
-                        self.bohater.sila = self.bohater.sila + wzmocnienie
-                        self.bohater.oslona = self.bohater.oslona + wzmocnienie
-                        self.bohater.zdrowie = self.bohater.zdrowie + wzmocnienie
+                        self.bohater.sila = self.bohater.sila + self.wzmocnienie
+                        self.bohater.oslona = self.bohater.oslona + self.wzmocnienie
+                        self.bohater.zdrowie = self.bohater.zdrowie + self.wzmocnienie
                         self.bohater.level = self.bohater.level + 1
-                        wzmocnienie = wzmocnienie + 20
-                        self.koszt_levela = self.koszt_levela + self.koszt_levela
                         print(f"STATYSTYKI:\npseudonim: {self.bohater.imie}\nzdrowie: {self.bohater.zdrowie}\nobrażenia: {self.bohater.sila}\nosłona: {self.bohater.oslona}\npunkty: {self.bohater.punkty}\nBudżet: {self.bohater.pieniadze}\nLevel: {self.bohater.level}\nKlucze: {self.bohater.klucze}")
                         self.poruszaj_sie2()
 
@@ -151,6 +153,7 @@ class Gra:
         elif wybor == "7":
             print("Uwaga! Nadchodzi Finałowy BOSS!")
             self.walka(self.boss)
+
         elif wybor == "8":
             if self.bohater.punkty >= 3000:
                 if self.bohater.klucze >= 1:
@@ -186,8 +189,8 @@ class Gra:
                     przeciwnik.atakuj(self.bohater)
             elif wybor == "2":
                 print("Uciekasz z walki!")
-                self.bohater.pieniadze = self.bohater.pieniadze - 10
-                przeciwnik.zdrowie = przeciwnik.zdrowie + 50
+                self.bohater.pieniadze -= 100
+                przeciwnik.zdrowie += 500
                 self.poruszaj_sie2()
                 break
             else:

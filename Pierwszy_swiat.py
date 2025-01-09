@@ -5,7 +5,7 @@ import Drugi_swiat
 
 
 class Gra:
-    def __init__(self, koszt_levela):
+    def __init__(self, koszt_levela, wzmocnienie):
         self.bron = None
         self.bohater = None
         self.przeciwnik1 = Przeciwnik("Goblin", 30, 5, 50, 50)
@@ -14,6 +14,7 @@ class Gra:
         self.przeciwnik4 = Przeciwnik("Terroryści", 100, 20, 300, 300)
         self.boss = Przeciwnik("Smok", 300, 40, 400, 400)
         self.koszt_levela = koszt_levela
+        self.wzmocnienie = wzmocnienie
 
     def start(self):
         print("Witaj w grze przygodowej!")
@@ -134,18 +135,17 @@ class Gra:
                     self.poruszaj_sie()
 
             elif kupno == "5":
-                self.koszt_levela = 50
-                wzmocnienie = 20
+                self.koszt_levela += 50
+                self.wzmocnienie += 20
                 if self.bohater.pieniadze < self.koszt_levela:
                     print("Za mało pieniędzy")
                     self.poruszaj_sie()
                 else:
                     while self.bohater.pieniadze >= self.koszt_levela:
                         self.bohater.pieniadze = self.bohater.pieniadze - self.koszt_levela
-                        wzmocnienie = wzmocnienie + wzmocnienie
-                        self.bohater.sila = self.bohater.sila + wzmocnienie
-                        self.bohater.oslona = self.bohater.oslona + wzmocnienie
-                        self.bohater.zdrowie = self.bohater.zdrowie + wzmocnienie
+                        self.bohater.sila = self.bohater.sila + self.wzmocnienie
+                        self.bohater.oslona = self.bohater.oslona + self.wzmocnienie
+                        self.bohater.zdrowie = self.bohater.zdrowie + self.wzmocnienie
                         self.bohater.level = self.bohater.level + 1
                         print(f"STATYSTYKI:\npseudonim: {self.bohater.imie}\nzdrowie: {self.bohater.zdrowie}\nobrażenia: {self.bohater.sila}\nosłona: {self.bohater.oslona}\npunkty: {self.bohater.punkty}\nBudżet: {self.bohater.pieniadze}\nLevel: {self.bohater.level}\nKlucze: {self.bohater.klucze}")
                         self.poruszaj_sie()
@@ -169,7 +169,7 @@ class Gra:
                     if koniec_1 == "dalej":
                         self.bohater.klucze = self.bohater.klucze - 1
                         x = Bohater(self.bohater.imie, self.bohater.zdrowie, self.bohater.sila, self.bohater.punkty, self.bohater.pieniadze, self.bohater.oslona, self.bohater.level, self.bohater.klucze)
-                        swiat2 = Drugi_swiat.Gra(50)
+                        swiat2 = Drugi_swiat.Gra(self.koszt_levela, self.wzmocnienie)
                         swiat2.start(x)
                     elif koniec_1 == "koniec":
                         self.poruszaj_sie()
@@ -197,8 +197,8 @@ class Gra:
                     przeciwnik.atakuj(self.bohater)
             elif wybor == "2":
                 print("Uciekasz z walki!")
-                self.bohater.pieniadze = self.bohater.pieniadze - 10
-                przeciwnik.zdrowie = przeciwnik.zdrowie + 50
+                self.bohater.pieniadze -= 100
+                przeciwnik.zdrowie += 50
                 self.poruszaj_sie()
                 break
             else:
