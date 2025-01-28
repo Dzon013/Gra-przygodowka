@@ -1,37 +1,53 @@
+import pygame
+
+
 class Bohater:
-    def __init__(self, imie, zdrowie, sila, punkty, pieniadze, oslona, level, klucze):
-        self.imie = imie
-        self.zdrowie = zdrowie
-        self.sila = sila
-        self.punkty = punkty
-        self.pieniadze = pieniadze
-        self.oslona = oslona
-        self.level = level
-        self.klucze = klucze
+    def __init__(self, x, y):
+        # self.imie = imie
+        self.x = x
+        self.y = y
+        self.grafika = pygame.image.load("Bohater/stand.png")
+        self.wysokosc = self.grafika.get_height()
+        self.szerokosc = self.grafika.get_width()
+        self.hitbox = pygame.Rect(self.x, self.y, self.szerokosc, self.wysokosc)
+        self.predkosc = 10
 
-    def atakuj(self, przeciwnik):
-        obrazenia = self.sila
-        przeciwnik.zdrowie = przeciwnik.zdrowie - obrazenia
-        print(f"{self.imie} zaatakował {przeciwnik.imie} i zadał {obrazenia} obrażeń!")
-        if przeciwnik.zdrowie <= 0:
-            print(f"{przeciwnik.imie} został pokonany!")
+    def tick(self):
+        klawisze = pygame.key.get_pressed()
+        if klawisze[pygame.K_w]:
+            self.y -= self.predkosc
+        if klawisze[pygame.K_s]:
+            self.y += self.predkosc
+        if klawisze[pygame.K_a]:
+            self.x -= self.predkosc
+        if klawisze[pygame.K_d]:
+            self.x += self.predkosc
+
+    def draw(self, okno):
+        okno.blit(self.grafika, (self.x, self.y))
 
 
-class Przeciwnik:
-    def __init__(self, imie, zdrowie, sila, punkty, pieniadze):
-        self.imie = imie
-        self.zdrowie = zdrowie
-        self.sila = sila
-        self.xp = punkty
-        self.kasa = pieniadze
+class Bohater2:
+    def __init__(self, x, y):
+        # self.imie = imie
+        self.x = x
+        self.y = y
+        self.grafika = pygame.image.load("Bohater.png")
+        self.wysokosc = self.grafika.get_height()
+        self.szerokosc = self.grafika.get_width()
+        self.hitbox = pygame.Rect(self.x, self.y, self.szerokosc, self.wysokosc)
+        self.predkosc = 10
 
-    def atakuj(self, bohater):
-        obrazenia = self.sila
-        bohater.oslona = bohater.oslona - obrazenia
-        if bohater.oslona <= 0:
-            bohater.zdrowie = bohater.zdrowie - obrazenia
-            print(f"{self.imie} zaatakował {bohater.imie} i zadał {obrazenia} obrażeń!")
-            print(f"{bohater.imie}:\nzdrowie: {bohater.zdrowie}")
-            print(f"{self.imie}:\nzdrowie: {self.zdrowie}")
-            if bohater.zdrowie <= 0:
-                print(f"{bohater.imie} został pokonany!")
+    def tick(self):
+        klawisze = pygame.key.get_pressed()
+        if klawisze[pygame.K_UP]:
+            self.y -= self.predkosc
+        if klawisze[pygame.K_DOWN]:
+            self.y += self.predkosc
+        if klawisze[pygame.K_LEFT]:
+            self.x -= self.predkosc
+        if klawisze[pygame.K_RIGHT]:
+            self.x += self.predkosc
+
+    def draw(self, okno):
+        okno.blit(self.grafika, (self.x, self.y))
